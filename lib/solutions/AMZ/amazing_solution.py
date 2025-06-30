@@ -12,22 +12,22 @@ class AmazingSolution:
         """
         script_path = os.path.join(os.path.dirname(__file__), "amazing.py")
         input_data = f"{columns}\n{rows}\n"
-        # Handle ENTRY_COLUMN if present
-        if isinstance(maze_generation_options, dict):
-            if "ENTRY_COLUMN" in maze_generation_options:
-                entry_column = maze_generation_options["ENTRY_COLUMN"]
-                if entry_column is not None:
-                    input_data += f"{entry_column}\n"
-                else:
-                    input_data += f"\n"
 
-            # Handle LEGACY_RANDOM_MAGIC_NUMBER if present
-            if "LEGACY_RANDOM_MAGIC_NUMBER" in maze_generation_options:
-                magic_number = maze_generation_options["LEGACY_RANDOM_MAGIC_NUMBER"]
-                if magic_number is not None:
-                    input_data += f"{magic_number}\n"
-                else:
-                    input_data += f"\n"
+        # Always check for ENTRY_COLUMN first, then LEGACY_RANDOM_MAGIC_NUMBER
+        entry_column = ""
+        magic_number = ""
+
+        if isinstance(maze_generation_options, dict):
+            if "ENTRY_COLUMN" in maze_generation_options and maze_generation_options["ENTRY_COLUMN"] is not None:
+                entry_column = str(maze_generation_options["ENTRY_COLUMN"])
+            if "LEGACY_RANDOM_MAGIC_NUMBER" in maze_generation_options and maze_generation_options["LEGACY_RANDOM_MAGIC_NUMBER"] is not None:
+                magic_number = str(maze_generation_options["LEGACY_RANDOM_MAGIC_NUMBER"])
+
+        # Add ENTRY_COLUMN (or blank line)
+        input_data += f"{entry_column}\n"
+        # Add LEGACY_RANDOM_MAGIC_NUMBER (or blank line)
+        input_data += f"{magic_number}\n"
+
         result = subprocess.run(
             [sys.executable, script_path],
             input=input_data.encode(),
@@ -52,5 +52,5 @@ class AmazingSolution:
 if __name__ == "__main__":
     # Example usage with ENTRY_COLUMN as a map key
     #result = AmazingSolution().amazing_maze(5, 5, { "ENTRY_COLUMN": "3" })  # Example usage
-    result = AmazingSolution().amazing_maze(2, 2, { "LEGACY_RANDOM_MAGIC_NUMBER": "0.99" })  # Example usage
+    result = AmazingSolution().amazing_maze(2, 2, { "LEGACY_RANDOM_MAGIC_NUMBER": "0.5" })  # Example usage
     print(result)
