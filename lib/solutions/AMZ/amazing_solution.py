@@ -40,5 +40,5 @@ class AmazingSolution:
 
 if __name__ == "__main__":
     # Example usage with ENTRY_COLUMN as a map key
-    result = AmazingSolution().amazing_maze(5, 5, { "ENTRY_COLUMN": "1" })  # Example usage
+    result = AmazingSolution().amazing_maze(5, 5, { "ENTRY_COLUMN": "3" })  # Example usage
     print(result)
