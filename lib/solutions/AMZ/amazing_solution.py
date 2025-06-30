@@ -35,5 +35,3 @@ class AmazingSolution:
 if __name__ == "__main__":
     result = AmazingSolution().amazing_maze(5, 5, None)  # Example usage
     print(result)
-
-
