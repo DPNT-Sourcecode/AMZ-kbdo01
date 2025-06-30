@@ -5,17 +5,22 @@ class Main:
         self.current_line_char_count = 0
         self.entry_column = entry_column  # 1-indexed, or None
         self.magic_number = magic_number  # Used for deterministic "random"
+        self._maze_lines = []  # Buffer for maze output
 
     def print_expr(self, expression):
         if isinstance(expression, (int, float)):
             text = f"{expression:.2f}".rstrip('0').rstrip('.')
         else:
             text = expression
-        print(text, end='')
+        # Instead of printing, append to buffer
+        if not self._maze_lines:
+            self._maze_lines.append("")
+        self._maze_lines[-1] += text
         self.current_line_char_count += len(text)
 
     def println(self):
-        print()
+        # Instead of printing, append a new line to buffer
+        self._maze_lines.append("")
         self.current_line_char_count = 0
 
     def tab(self, num_spaces):
@@ -34,8 +39,25 @@ class Main:
     def mid(self, text, starting_index, num_chars):
         return text[self.as_int(starting_index - 1):self.as_int(starting_index + num_chars - 1)]
 
-    # Main function
-    def run(self):
+    def generate_maze(self):
+        """
+        Runs the maze generation logic and returns the maze as a string.
+        """
+        self._maze_lines = []
+        self.current_line_char_count = 0
+        self._run_maze_logic()
+        # Remove any leading empty lines
+        while self._maze_lines and self._maze_lines[0] == "":
+            self._maze_lines.pop(0)
+        # Remove any trailing empty lines
+        while self._maze_lines and self._maze_lines[-1] == "":
+            self._maze_lines.pop()
+        return "\n".join(self._maze_lines)
+
+    def _run_maze_logic(self):
+        """
+        The original run() logic, but all output is captured in self._maze_lines.
+        """
         label = 10
 
         scalarC = 0
@@ -973,5 +995,11 @@ class Main:
                 case _:
                     raise ValueError(f"The label {label} is not recognized.")
 
+    # The original run() method now only displays the maze
+    def run(self):
+        maze = self.generate_maze()
+        print(maze)
+
 if __name__ == "__main__":
     Main().run()
+
