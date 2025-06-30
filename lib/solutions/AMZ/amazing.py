@@ -1,9 +1,10 @@
 import math
 
 class Main:
-    def __init__(self, entry_column=None):
+    def __init__(self, entry_column=None, magic_number=0.5):
         self.current_line_char_count = 0
         self.entry_column = entry_column  # 1-indexed, or None
+        self.magic_number = magic_number  # Used for deterministic "random"
 
     def print_expr(self, expression):
         if isinstance(expression, (int, float)):
@@ -27,7 +28,8 @@ class Main:
         return math.floor(variable)
 
     def random(self, positive_int):
-        return 0.5
+        # Use the magic_number instead of a fixed 0.5
+        return self.magic_number
 
     def mid(self, text, starting_index, num_chars):
         return text[self.as_int(starting_index - 1):self.as_int(starting_index + num_chars - 1)]
@@ -106,6 +108,10 @@ class Main:
                         entry_col = input()
                         if entry_col.strip() != "":
                             self.entry_column = int(entry_col)
+                        # Try to read magic_number (optional fourth input)
+                        magic_number_input = input()
+                        if magic_number_input.strip() != "":
+                            self.magic_number = float(magic_number_input)
                     except EOFError:
                         pass
 
