@@ -18,11 +18,16 @@ class AmazingSolution:
                 entry_column = maze_generation_options["ENTRY_COLUMN"]
                 if entry_column is not None:
                     input_data += f"{entry_column}\n"
+                else:
+                    input_data += f"\n"
+
             # Handle LEGACY_RANDOM_MAGIC_NUMBER if present
             if "LEGACY_RANDOM_MAGIC_NUMBER" in maze_generation_options:
                 magic_number = maze_generation_options["LEGACY_RANDOM_MAGIC_NUMBER"]
                 if magic_number is not None:
                     input_data += f"{magic_number}\n"
+                else:
+                    input_data += f"\n"
         result = subprocess.run(
             [sys.executable, script_path],
             input=input_data.encode(),
