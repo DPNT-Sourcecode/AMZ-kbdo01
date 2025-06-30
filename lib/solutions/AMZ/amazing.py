@@ -145,7 +145,7 @@ class Main:
                     label = 165
                     scalarQ = 0
                     scalarZ = 0
-                    scalarX = self.round_down_to_int(self.random(1)*scalarH+1)
+                    scalarX = self.round_down_to_int(self.random(1)*scalarH+1) #Exit location.
                 
                 #165FORI=1TOH
                 case 165:
@@ -153,13 +153,13 @@ class Main:
                     if loopActive165 == False:
                         scalarI = 1
                         loopActive165 = True
-                    if (scalarI - scalarH) * 1 > 0:
+                    if (scalarI - scalarH) * 1 > 0: # reached the last column 
                         label = 190
                 
                 #170IFI=XTHEN173
                 case 170:
                     label = 171
-                    if (scalarI == scalarX):
+                    if (scalarI == scalarX): # if I=X draw the exit
                         label = 173
                 
                 #171PRINT".--";:GOTO180
@@ -171,7 +171,7 @@ class Main:
                 #173PRINT".";
                 case 173:
                     label = 180
-                    self.print_expr(".  ")
+                    self.print_expr(".  ") # draw the exit
                 
                 #180NEXTI
                 case 180:
@@ -182,8 +182,8 @@ class Main:
                 #190PRINT"."
                 case 190:
                     label = 195
-                    self.print_expr(".")
-                    self.println()
+                    self.print_expr(".") # draw the right wall
+                    self.println() # move to the next line
                 
                 #195C=1:W(X,1)=C:C=C+1
                 case 195:
@@ -957,3 +957,4 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
