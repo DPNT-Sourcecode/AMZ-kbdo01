@@ -1,7 +1,8 @@
 
 class SumSolution:
     
-    def sumSolution(a: int, b: int) -> int:
+    def compute(self, x, y):
+    #def sumSolution(a: int, b: int) -> int:
         """
         Sums two positive integers between 0 and 100 (inclusive).
 
@@ -17,4 +18,5 @@ class SumSolution:
 
     #def compute(self, x, y):
     #    raise NotImplementedError()
+
 
