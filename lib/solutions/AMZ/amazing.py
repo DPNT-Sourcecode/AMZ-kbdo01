@@ -883,21 +883,35 @@ if __name__ == "__main__":
     magic_number = 0.5
     dead_end_behaviour = "CREATE_EXIT"
     try:
-        columns = float(input())
-        rows = float(input())
+        columns = float(input().strip())
+    except EOFError:
+        columns = 5  # default value or raise error
+    try:
+        rows = float(input().strip())
+    except EOFError:
+        rows = 5  # default value or raise error
+    try:
         entry_col_input = input()
         if entry_col_input.strip() != "":
             entry_col = int(entry_col_input)
+    except EOFError:
+        pass
+    try:
         magic_number_input = input()
         if magic_number_input.strip() != "":
             magic_number = float(magic_number_input)
+    except EOFError:
+        pass
+    try:
         dead_end_behaviour_input = input()
         if dead_end_behaviour_input.strip() != "":
             dead_end_behaviour = dead_end_behaviour_input.strip()
     except EOFError:
         pass
+
     m = Main(entry_column=entry_col, magic_number=magic_number, dead_end_behaviour=dead_end_behaviour)
     m.run()
+
 
 
 
