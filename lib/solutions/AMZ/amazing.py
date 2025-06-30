@@ -1,8 +1,9 @@
 import math
 
 class Main:
-    def __init__(self):
+    def __init__(self, entry_column=None):
         self.current_line_char_count = 0
+        self.entry_column = entry_column  # 1-indexed, or None
 
     def print_expr(self, expression):
         if isinstance(expression, (int, float)):
@@ -100,7 +101,14 @@ class Main:
                     self.println()
                     scalarH = float(input())
                     scalarV = float(input())
-                
+                    # Read entry column if provided (optional third input)
+                    try:
+                        entry_col = input()
+                        if entry_col.strip() != "":
+                            self.entry_column = int(entry_col)
+                    except EOFError:
+                        pass
+
                 #102IFH<>1ANDV<>1THEN110
                 case 102:
                     label = 104
@@ -145,7 +153,11 @@ class Main:
                     label = 165
                     scalarQ = 0
                     scalarZ = 0
-                    scalarX = self.round_down_to_int(self.random(1)*scalarH+1) #Exit location.
+                    # If entry_column is specified, use it (1-indexed), else legacy random
+                    if self.entry_column is not None:
+                        scalarX = int(self.entry_column)
+                    else:
+                        scalarX = self.round_down_to_int(self.random(1)*scalarH+1) #Exit location.
                 
                 #165FORI=1TOH
                 case 165:
@@ -957,4 +969,5 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
