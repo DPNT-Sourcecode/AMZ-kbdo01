@@ -835,7 +835,6 @@ class Main:
                 
                 #975V(R,S)=3:Q=0:GOTO1000
                 case 975:
-                    label = 980
                     # If on last row and behaviour is CREATE_TREASURE, place treasure instead of exit
                     if (self.dead_end_behaviour == "CREATE_TREASURE" and scalarR == scalarH):
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4  # 4 = treasure
@@ -843,7 +842,7 @@ class Main:
                     else:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3  # 3 = exit
                     scalarQ = 0
-                    label = 1000
+                    label = 1000  # <-- FIX: Go directly to 1000, do not set label = 980
 
                 #1013V(X,V)=3:GOTO1015
                 case 1013:
@@ -980,4 +979,5 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
