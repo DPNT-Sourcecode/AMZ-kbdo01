@@ -831,7 +831,7 @@ class Main:
                 case 970:
                     label = 975
                     if (matrixV[self.as_int(scalarR)][self.as_int(scalarS)] == 0):
-                        label = 980
+                        label = 1000
                 
                 #975V(R,S)=3:Q=0:GOTO1000
                 case 975:
@@ -843,6 +843,9 @@ class Main:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3  # 3 = exit
                     scalarQ = 0
                     label = 1000  # <-- FIX: Go directly to 1000, do not set label = 980
+
+                case 1000:
+                    label = 260
 
                 #1013V(X,V)=3:GOTO1015
                 case 1013:
@@ -979,5 +982,6 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
