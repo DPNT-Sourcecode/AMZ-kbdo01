@@ -11,4 +11,4 @@ class HelloSolution:
         :return: A string containing a message
         """
         #return f"Hello, {friend_name}!"
-        return f"Hello World!"
+        return f"Hello, World!"
