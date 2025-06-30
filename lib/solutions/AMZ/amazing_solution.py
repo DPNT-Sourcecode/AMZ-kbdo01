@@ -12,9 +12,8 @@ class AmazingSolution:
         """
         script_path = os.path.join(os.path.dirname(__file__), "amazing.py")
         input_data = f"{columns}\n{rows}\n"
-        # Check for ENTRY_COLUMN in the options map and append if present
-        entry_column = None
-        if maze_generation_options and "ENTRY_COLUMN" in maze_generation_options:
+        # Ensure maze_generation_options is a map and check for ENTRY_COLUMN
+        if isinstance(maze_generation_options, dict) and "ENTRY_COLUMN" in maze_generation_options:
             entry_column = maze_generation_options["ENTRY_COLUMN"]
             if entry_column is not None:
                 input_data += f"{entry_column}\n"
@@ -38,7 +37,8 @@ class AmazingSolution:
         maze_lines = lines[prev_blank_idx + 1:]
         maze = "\n".join(maze_lines)
         return maze
+
 if __name__ == "__main__":
-    #result = AmazingSolution().amazing_maze(5, 5, None)  # Example usage
-    result = AmazingSolution().amazing_maze(5, 5, { ENTRY_COLUMN="1" })  # Example usage
+    # Example usage with ENTRY_COLUMN as a map key
+    result = AmazingSolution().amazing_maze(5, 5, { "ENTRY_COLUMN": "1" })  # Example usage
     print(result)
