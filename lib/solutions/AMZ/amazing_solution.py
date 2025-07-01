@@ -16,7 +16,7 @@ class AmazingSolution:
         # Always check for ENTRY_COLUMN first, then LEGACY_RANDOM_MAGIC_NUMBER, then DEAD_END_ON_LAST_ROW_BEHAVIOUR
         entry_column = ""
         magic_number = ""
-        dead_end_behaviour = ""
+        dead_end_behaviour_str = ""
 
         if isinstance(maze_generation_options, dict):
             if "ENTRY_COLUMN" in maze_generation_options and maze_generation_options["ENTRY_COLUMN"] is not None:
@@ -61,7 +61,7 @@ class AmazingSolution:
 
 if __name__ == "__main__":
     # Example usage with DEAD_END_ON_LAST_ROW_BEHAVIOUR as a map key
-    result = AmazingSolution().amazing_maze(3, 4, { "ENTRY_COLUMN": "1", "DEAD_END_ON_LAST_ROW_BEHAVIOUR": "CREATE_TREASURE" })  # Example
+    #result = AmazingSolution().amazing_maze(3, 4, { "ENTRY_COLUMN": "1", "DEAD_END_ON_LAST_ROW_BEHAVIOUR": "CREATE_TREASURE" })  # Example
     #result = AmazingSolution().amazing_maze(3, 4, { "ENTRY_COLUMN": "1", "DEAD_END_ON_LAST_ROW_BEHAVIOUR": "CREATE_EXIT" })  # Example
-    #result = AmazingSolution().amazing_maze(2, 2, { "LEGACY_RANDOM_MAGIC_NUMBER": "0.5" })  # Example
+    result = AmazingSolution().amazing_maze(2, 2, { "LEGACY_RANDOM_MAGIC_NUMBER": "0.5" })  # Example
     print(result)
