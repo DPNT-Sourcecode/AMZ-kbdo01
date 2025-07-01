@@ -1,7 +1,7 @@
 import math
 
 class Main:
-    def __init__(self, entry_column=None, magic_number=0.5,treasure=False):
+    def __init__(self, entry_column=None, magic_number=0.5,treasure=0):
         self.current_line_char_count = 0
         self.entry_column = entry_column  # 1-indexed, or None
         self.magic_number = magic_number  # Used for deterministic "random"
@@ -135,6 +135,10 @@ class Main:
                         magic_number_input = input()
                         if magic_number_input.strip() != "":
                             self.magic_number = float(magic_number_input)
+                        # Try to read magic_number (optional fourth input)
+                        treasure_input = input()
+                        if treasure_input.strip() != "":
+                            self.treasure = int(treasure_input)
                     except EOFError:
                         pass
 
@@ -1003,6 +1007,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
