@@ -135,6 +135,9 @@ class Main:
                         magic_number_input = input()
                         if magic_number_input.strip() != "":
                             self.magic_number = float(magic_number_input)
+                        treasure_input = input()
+                        if treasure_input.strip() != "":
+                            self.treasure = int(treasure_input)
                     except EOFError:
                         pass
 

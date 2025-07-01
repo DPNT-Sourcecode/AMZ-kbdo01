@@ -61,7 +61,7 @@ class AmazingSolution:
 
 if __name__ == "__main__":
     # Example usage with DEAD_END_ON_LAST_ROW_BEHAVIOUR as a map key
-    #result = AmazingSolution().amazing_maze(3, 4, { "ENTRY_COLUMN": "1", "DEAD_END_ON_LAST_ROW_BEHAVIOUR": "CREATE_TREASURE" })  # Example
-    result = AmazingSolution().amazing_maze(3, 4, { "ENTRY_COLUMN": "1", "DEAD_END_ON_LAST_ROW_BEHAVIOUR": "CREATE_EXIT" })  # Example
+    result = AmazingSolution().amazing_maze(3, 4, { "ENTRY_COLUMN": "1", "DEAD_END_ON_LAST_ROW_BEHAVIOUR": "CREATE_TREASURE" })  # Example
+    #result = AmazingSolution().amazing_maze(3, 4, { "ENTRY_COLUMN": "1", "DEAD_END_ON_LAST_ROW_BEHAVIOUR": "CREATE_EXIT" })  # Example
     #result = AmazingSolution().amazing_maze(2, 2, { "LEGACY_RANDOM_MAGIC_NUMBER": "0.5" })  # Example
     print(result)
