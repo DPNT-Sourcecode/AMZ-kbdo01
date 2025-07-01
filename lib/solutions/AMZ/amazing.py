@@ -758,6 +758,7 @@ class Main:
                     # If dead end is in the last row, mark as treasure (4) instead of exit (3)
                     if scalarS == scalarV:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarV)] = 4
+                        print("Treasure Found!")
                         # Do NOT place exit here; random exit will be picked later
                     else:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
@@ -1027,6 +1028,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
