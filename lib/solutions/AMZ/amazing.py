@@ -1,13 +1,11 @@
 import math
 
 class Main:
-    def __init__(self, entry_column=None, magic_number=0.5, treasure=0, dead_end_behaviour="DEAD_END_ON_LAST_ROW_BEHAVIOUR"):
+    def __init__(self, entry_column=None, magic_number=0.5):
         self.current_line_char_count = 0
         self.entry_column = entry_column  # 1-indexed, or None
         self.magic_number = magic_number  # Used for deterministic "random"
         self._maze_lines = []  # Buffer for maze output
-        self.treasure = treasure  # Treasure chest within the maze?
-        self.dead_end_behaviour = dead_end_behaviour  # New behaviour parameter
 
     def print_expr(self, expression):
         if isinstance(expression, (int, float)):
@@ -41,35 +39,24 @@ class Main:
     def mid(self, text, starting_index, num_chars):
         return text[self.as_int(starting_index - 1):self.as_int(starting_index + num_chars - 1)]
 
-    def generate_maze(self, rows=None, cols=None, options=None):
+    def generate_maze(self):
         """
         Runs the maze generation logic and returns the maze as a string.
-        Accepts optional rows, cols, and options for easier integration.
         """
-        if rows is not None and cols is not None:
-            self.entry_column = int(options.get("ENTRY_COLUMN", 1)) if options and "ENTRY_COLUMN" in options else None
-            self.magic_number = float(options.get("MAGIC_NUMBER", 0.5)) if options and "MAGIC_NUMBER" in options else 0.5
-            self.treasure = int(options.get("TREASURE", 0)) if options and "TREASURE" in options else 0
-            self.dead_end_behaviour = options.get("DEAD_END_ON_LAST_ROW_BEHAVIOUR", "CREATE_EXIT") if options else "CREATE_EXIT"
-            self._maze_lines = []
-            self.current_line_char_count = 0
-            return self._run_maze_logic(rows, cols)
-        else:
-            self._maze_lines = []
-            self.current_line_char_count = 0
-            self._run_maze_logic()
-            # Remove any leading empty lines
-            while self._maze_lines and self._maze_lines[0] == "":
-                self._maze_lines.pop(0)
-            # Remove any trailing empty lines
-            while self._maze_lines and self._maze_lines[-1] == "":
-                self._maze_lines.pop()
-            return "\n".join(self._maze_lines)
+        self._maze_lines = []
+        self.current_line_char_count = 0
+        self._run_maze_logic()
+        # Remove any leading empty lines
+        while self._maze_lines and self._maze_lines[0] == "":
+            self._maze_lines.pop(0)
+        # Remove any trailing empty lines
+        while self._maze_lines and self._maze_lines[-1] == "":
+            self._maze_lines.pop()
+        return "\n".join(self._maze_lines)
 
-    def _run_maze_logic(self, forced_rows=None, forced_cols=None):
+    def _run_maze_logic(self):
         """
         The original run() logic, but all output is captured in self._maze_lines.
-        Accepts forced_rows and forced_cols for integration with amazing_maze.
         """
         label = 10
 
@@ -89,9 +76,6 @@ class Main:
         loopActive1017 = False
         loopActive1043 = False
         loopActive1015 = False
-
-        # --- R5: Track treasure on last row ---
-        treasure_col = None  # 1-indexed column for treasure, if any
 
         iterations = 0
 
@@ -139,8 +123,8 @@ class Main:
                     label = 102
                     self.print_expr("WHAT ARE YOUR WIDTH AND LENGTH")
                     self.println()
-                    scalarH = float(input()) # columns
-                    scalarV = float(input()) # rows
+                    scalarH = float(input())
+                    scalarV = float(input())
                     # Read entry column if provided (optional third input)
                     try:
                         entry_col = input()
@@ -150,17 +134,13 @@ class Main:
                         magic_number_input = input()
                         if magic_number_input.strip() != "":
                             self.magic_number = float(magic_number_input)
-                        # Try to read magic_number (optional fourth input)
-                        treasure_input = input()
-                        if treasure_input.strip() != "":
-                            self.treasure = int(treasure_input)
                     except EOFError:
                         pass
 
                 #102IFH<>1ANDV<>1THEN110
                 case 102:
                     label = 104
-                    if (scalarH != 1) and (scalarV != 1): 
+                    if (scalarH != 1) and (scalarV != 1):
                         label = 110
                 
                 #104PRINT"MEANINGLESSDIMENSIONS.TRYAGAIN.":GOTO100
@@ -882,29 +862,14 @@ class Main:
                 case 1012:
                     label = 1013
                     if (matrixV[self.as_int(scalarX)][self.as_int(scalarV)] == 0):
-                        # --- R5: Place treasure instead of exit if required ---
-                        if (
-                            self.dead_end_behaviour == "CREATE_TREASURE"
-                            and treasure_col is None
-                        ):
-                            treasure_col = self.as_int(scalarX)
-                            # Do NOT place exit (skip label = 1014)
-                            label = 1015
-                        else:
-                            label = 1014
-
+                        label = 1014
+                
                 #1013V(X,V)=3:GOTO1015
                 case 1013:
                     label = 1014
                     matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 3
-                    # --- R5: Remove treasure if exit is created in same column ---
-                    if (
-                        self.dead_end_behaviour == "CREATE_TREASURE"
-                        and treasure_col == self.as_int(scalarX)
-                    ):
-                        treasure_col = None
                     label = 1015
-
+                
                 #1014V(X,V)=1
                 case 1014:
                     label = 1015
@@ -1037,3 +1002,4 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
