@@ -966,6 +966,8 @@ class Main:
                     label = 1051
                     if (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] == 2):
                         label = 1060
+                    if (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] == 1):
+                        label = 1060
                 
                 #1051PRINT":";
                 case 1051:
@@ -1018,5 +1020,6 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
