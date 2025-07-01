@@ -834,8 +834,11 @@ class Main:
                 #975V(R,S)=3:Q=0:GOTO1000
                 case 975:
                     label = 980
-                    #matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
-                    matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
+                    # Only place a treasure chest if the dead end is in the last row
+                    if scalarR == scalarH:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4  # 4 = treasure chest
+                    else:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3  # 3 = exit
                     scalarQ = 0
                     label = 1000
                 
@@ -1012,3 +1015,4 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
