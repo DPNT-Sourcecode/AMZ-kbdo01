@@ -1014,6 +1014,7 @@ class Main:
                     label = 9999
 
                 case 9999:
+                    print(matrixV)
                     break
 
                 case _:
@@ -1026,6 +1027,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
