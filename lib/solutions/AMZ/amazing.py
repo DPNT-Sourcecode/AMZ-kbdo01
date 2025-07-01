@@ -1,11 +1,10 @@
 import math
 
 class Main:
-    def __init__(self, entry_column=None, magic_number=0.5, treasure_flag=0):
+    def __init__(self, entry_column=None, magic_number=0.5):
         self.current_line_char_count = 0
         self.entry_column = entry_column  # 1-indexed, or None
         self.magic_number = magic_number  # Used for deterministic "random"
-        self.treasure_flag = treasure_flag  # 0 = exit, 1 = treasure
         self._maze_lines = []  # Buffer for maze output
 
     def print_expr(self, expression):
@@ -77,8 +76,6 @@ class Main:
         loopActive1017 = False
         loopActive1043 = False
         loopActive1015 = False
-        treasure_col = None
-        treasure_row = None
 
         iterations = 0
 
@@ -826,46 +823,171 @@ class Main:
                 #970IFV(R,S)=0THEN980
                 case 970:
                     label = 975
-                    if (matrixV[self.as_int(scalarR)][self.as_int(scalarS)] != 0):
-                        label = 1000
+                    if (matrixV[self.as_int(scalarR)][self.as_int(scalarS)] == 0):
+                        label = 980
                 
-                #975V(R,S)=3:Q=0:GOTO1000 (modified for treasure)
+                #975V(R,S)=3:Q=0:GOTO1000
                 case 975:
-                    # If on last row and flag is set, place treasure instead of exit
-                    if (self.treasure_flag == 1 and scalarR == scalarH):
-                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4  # 4 = treasure
-                        treasure_col = self.as_int(scalarR)
-                        treasure_row = self.as_int(scalarS)
-                    else:
-                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3  # 3 = exit
+                    label = 980
+                    matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
                     scalarQ = 0
                     label = 1000
-
+                
+                #980V(R,S)=1:Q=0:R=1:S=1:GOTO250
+                case 980:
+                    label = 1000
+                    matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 1
+                    scalarQ = 0
+                    scalarR = 1
+                    scalarS = 1
+                    label = 250
+                
                 #1000GOTO210
                 case 1000:
+                    label = 1010
                     label = 210
-
-                #1013V(X,V)=3:GOTO1015 (remove treasure if exit is placed in same col)
+                
+                #1010IFZ=1THEN1015
+                case 1010:
+                    label = 1011
+                    if (scalarZ == 1):
+                        label = 1015
+                
+                #1011X=INT(RND(1)*H+1)
+                case 1011:
+                    label = 1012
+                    scalarX = self.round_down_to_int(self.random(1)*scalarH+1)
+                
+                #1012IFV(X,V)=0THEN1014
+                case 1012:
+                    label = 1013
+                    if (matrixV[self.as_int(scalarX)][self.as_int(scalarV)] == 0):
+                        label = 1014
+                
+                #1013V(X,V)=3:GOTO1015
                 case 1013:
                     label = 1014
-                    # If treasure was placed in this column, remove it
-                    if (self.treasure_flag == 1 and treasure_col == self.as_int(scalarX)):
-                        matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 3  # exit replaces treasure
-                        treasure_col = None
-                        treasure_row = None
-                    else:
-                        matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 3
+                    matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 3
                     label = 1015
-
-                #1020PRINT""; (render treasure if present)
+                
+                #1014V(X,V)=1
+                case 1014:
+                    label = 1015
+                    matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 1
+                
+                #1015FORJ=1TOV
+                case 1015:
+                    label = 1016
+                    if loopActive1015 == False:
+                        scalarJ = 1
+                        loopActive1015 = True
+                    if (scalarJ - scalarV) * 1 > 0:
+                        label = 1073
+                
+                #1016PRINT"I";
+                case 1016:
+                    label = 1017
+                    self.print_expr("I")
+                
+                #1017FORI=1TOH
+                case 1017:
+                    label = 1018
+                    if loopActive1017 == False:
+                        scalarI = 1
+                        loopActive1017 = True
+                    if (scalarI - scalarH) * 1 > 0:
+                        label = 1041
+                
+                #1018IFV(I,J)<2THEN1030
+                case 1018:
+                    label = 1020
+                    if (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] < 2):
+                        label = 1030
+                
+                #1020PRINT"";
                 case 1020:
                     label = 1021
-                    if (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] == 4):
-                        self.print_expr("<>")
-                    else:
-                        self.print_expr("   ")
-
-                # ... rest of the code unchanged ...
+                    self.print_expr("   ")
+                
+                #1021GOTO1040
+                case 1021:
+                    label = 1030
+                    label = 1040
+                
+                #1030PRINT"I";
+                case 1030:
+                    label = 1040
+                    self.print_expr("  I")
+                
+                #1040NEXTI
+                case 1040:
+                    label = 1041
+                    scalarI = scalarI + 1
+                    label = 1017
+                
+                #1041PRINT
+                case 1041:
+                    label = 1043
+                    self.println()
+                
+                #1043FORI=1TOH
+                case 1043:
+                    label = 1045
+                    if loopActive1043 == False:
+                        scalarI = 1
+                        loopActive1043 = True
+                    if (scalarI - scalarH) * 1 > 0:
+                        label = 1071
+                
+                #1045IFV(I,J)=0THEN1060
+                case 1045:
+                    label = 1050
+                    if (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] == 0):
+                        label = 1060
+                
+                #1050IFV(I,J)=2THEN1060
+                case 1050:
+                    label = 1051
+                    if (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] == 2):
+                        label = 1060
+                
+                #1051PRINT":";
+                case 1051:
+                    label = 1052
+                    self.print_expr(":  ")
+                
+                #1052GOTO1070
+                case 1052:
+                    label = 1060
+                    label = 1070
+                
+                #1060PRINT":--";
+                case 1060:
+                    label = 1070
+                    self.print_expr(":--")
+                
+                #1070NEXTI
+                case 1070:
+                    label = 1071
+                    scalarI = scalarI + 1
+                    label = 1043
+                
+                #1071PRINT"."
+                case 1071:
+                    label = 1072
+                    self.print_expr(".")
+                    self.println()
+                
+                #1072NEXTJ
+                case 1072:
+                    label = 1073
+                    scalarJ = scalarJ + 1
+                    label = 1015
+                
+                #1073END
+                case 1073:
+                    label = 9999
+                    label = 9999
 
                 case 9999:
                     break
@@ -879,10 +1001,5 @@ class Main:
         print(maze)
 
 if __name__ == "__main__":
-    # Accept treasure_flag as an optional 5th input (0=exit, 1=treasure)
-    entry_col = None
-    magic_number = 0.5
-    treasure_flag = 0
-    
-    m = Main(entry_column=entry_col, magic_number=magic_number, treasure_flag=treasure_flag)
-    m.run()
+    Main().run()
+
