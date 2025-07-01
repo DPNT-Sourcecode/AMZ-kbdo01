@@ -757,7 +757,7 @@ class Main:
                     label = 880
                     # If dead end is in the last row, mark as treasure (4) instead of exit (3)
                     if scalarS == scalarV:
-                        matrixV[self.as_int(scalarR)][self.as_int(scalarV)] = 4
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
                         # Do NOT place exit here; random exit will be picked later
                     else:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
@@ -937,7 +937,9 @@ class Main:
                 #1030PRINT"I";
                 case 1030:
                     label = 1040
-                    self.print_expr("  I")
+                    # Only print wall if not a treasure
+                    if matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] != 4:
+                        self.print_expr("  I")
                 
                 #1040NEXTI
                 case 1040:
@@ -1022,3 +1024,4 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
