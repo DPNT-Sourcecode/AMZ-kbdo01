@@ -856,8 +856,14 @@ class Main:
                 #1010IFZ=1THEN1015
                 case 1010:
                     label = 1011
-                    if (scalarZ == 1):   # FIX                     
-                        label = 1015     # FIX
+                    # Only skip random exit if an exit (3) already exists in the last row
+                    exit_found = False
+                    for i in range(1, self.as_int(scalarH)+1):
+                        if matrixV[self.as_int(i)][self.as_int(scalarV)] == 3:
+                            exit_found = True
+                            break
+                    if exit_found:
+                        label = 1015
                 
                 #1011X=INT(RND(1)*H+1)
                 case 1011:
@@ -1012,6 +1018,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
