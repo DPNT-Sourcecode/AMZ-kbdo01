@@ -980,7 +980,29 @@ class Main:
                 #1071PRINT"."
                 case 1071:
                     label = 1072
-                    self.print_expr(".")
+                    # Check if this is the exit cell
+                    is_exit = (scalarI == self.as_int(scalarX)) and (scalarJ == self.as_int(scalarV))
+                    print_treasure = False
+                    if is_exit:
+                        # Check if exit is a dead end
+                        exit_col = self.as_int(scalarX)
+                        exit_row = self.as_int(scalarV)
+                        open_paths = 0
+                        # Up
+                        if matrixV[exit_col][exit_row-1] in (1,2):
+                            open_paths += 1
+                        # Left
+                        if matrixV[exit_col-1][exit_row] in (1,2):
+                            open_paths += 1
+                        # Right
+                        if matrixV[exit_col+1][exit_row] in (1,2):
+                            open_paths += 1
+                        if open_paths == 1:
+                            print_treasure = True
+                    if print_treasure:
+                        self.print_expr("<>")
+                    else:
+                        self.print_expr(".")
                     self.println()
                 
                 #1072NEXTJ
@@ -991,25 +1013,7 @@ class Main:
                 
                 #1073END
                 case 1073:
-                    # Check if exit is a dead end and print treasure chest if so
-                    exit_col = self.as_int(scalarX)
-                    exit_row = self.as_int(scalarV)
-                    # Count open paths from the exit cell
-                    open_paths = 0
-                    # Up
-                    if matrixV[exit_col][exit_row-1] in (1,2):
-                        open_paths += 1
-                    # Left
-                    if matrixV[exit_col-1][exit_row] in (1,2):
-                        open_paths += 1
-                    # Right
-                    if matrixV[exit_col+1][exit_row] in (1,2):
-                        open_paths += 1
-                    # If only one open path, it's a dead end
-                    if open_paths == 1:
-                        self.print_expr(self.tab(5))
-                        self.print_expr("<>")
-                        self.println()
+                    label = 9999
                     label = 9999
 
                 case 9999:
@@ -1025,6 +1029,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
