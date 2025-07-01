@@ -917,12 +917,14 @@ class Main:
                 #1018IFV(I,J)<2THEN1030
                 case 1018:
                     label = 1020
+                    if (scalarJ==scalarV-1) and (matrixV[self.as_int(scalarI)][self.as_int(scalarV)] == 1):
+                        self.print_expr("<>")
                     if (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] < 2):
                         label = 1030
                 
                 #1020PRINT"";
                 case 1020:
-                    label = 1021
+                    label = 1021                    
                     self.print_expr("   ")
                 
                 #1021GOTO1040
@@ -966,7 +968,8 @@ class Main:
                     label = 1051
                     if (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] == 2):
                         label = 1060
-                    if (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] == 1):
+                    
+                    if (scalarJ==scalarV)and (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] == 1):
                         label = 1060
                 
                 #1051PRINT":";
@@ -1020,6 +1023,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
