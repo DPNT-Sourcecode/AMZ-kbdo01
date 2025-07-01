@@ -1,10 +1,11 @@
 import math
 
 class Main:
-    def __init__(self, entry_column=None, magic_number=0.5):
+    def __init__(self, entry_column=None, magic_number=0.5, treasure_flag=0):
         self.current_line_char_count = 0
         self.entry_column = entry_column  # 1-indexed, or None
         self.magic_number = magic_number  # Used for deterministic "random"
+        self.treasure_flag = treasure_flag  # 0 = exit, 1 = treasure
         self._maze_lines = []  # Buffer for maze output
 
     def print_expr(self, expression):
@@ -77,6 +78,10 @@ class Main:
         loopActive1043 = False
         loopActive1015 = False
 
+        # Track treasure chest column if placed
+        treasure_col = None
+        treasure_row = None
+
         iterations = 0
 
         while True:
@@ -87,13 +92,13 @@ class Main:
                 break
 
             if loopActive165 and label > 180:
-                loopActive165 = False;
+                loopActive165 = False
             if loopActive1017 and label > 1040:
-                loopActive1017 = False;
+                loopActive1017 = False
             if loopActive1043 and label > 1070:
-                loopActive1043 = False;
+                loopActive1043 = False
             if loopActive1015 and label > 1072:
-                loopActive1015 = False;
+                loopActive1015 = False
 
             match label:
                 #10PRINTTAB(28);"AMAZINGPROGRAM"
@@ -826,13 +831,18 @@ class Main:
                     if (matrixV[self.as_int(scalarR)][self.as_int(scalarS)] == 0):
                         label = 980
                 
-                #975V(R,S)=3:Q=0:GOTO1000
+                #975V(R,S)=3:Q=0:GOTO1000 (modified for treasure)
                 case 975:
-                    label = 980
-                    matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
+                    # If on last row and flag is set, place treasure instead of exit
+                    if (self.treasure_flag == 1 and scalarR == scalarH):
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4  # 4 = treasure
+                        treasure_col = self.as_int(scalarR)
+                        treasure_row = self.as_int(scalarS)
+                    else:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3  # 3 = exit
                     scalarQ = 0
                     label = 1000
-                
+
                 #980V(R,S)=1:Q=0:R=1:S=1:GOTO250
                 case 980:
                     label = 1000
@@ -841,7 +851,7 @@ class Main:
                     scalarR = 1
                     scalarS = 1
                     label = 250
-                
+
                 #1000GOTO210
                 case 1000:
                     label = 1010
@@ -867,7 +877,13 @@ class Main:
                 #1013V(X,V)=3:GOTO1015
                 case 1013:
                     label = 1014
-                    matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 3
+                    # If treasure was placed in this column, remove it
+                    if (self.treasure_flag == 1 and treasure_col == self.as_int(scalarX)):
+                        matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 3  # exit replaces treasure
+                        treasure_col = None
+                        treasure_row = None
+                    else:
+                        matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 3
                     label = 1015
                 
                 #1014V(X,V)=1
@@ -1001,5 +1017,40 @@ class Main:
         print(maze)
 
 if __name__ == "__main__":
-    Main().run()
+    # Accept treasure_flag as an optional 5th input (0=exit, 1=treasure)
+    entry_col = None
+    magic_number = 0.5
+    treasure_flag = 0
+    try:
+        columns_input = input().strip()
+        columns = float(columns_input) if columns_input else 5
+    except EOFError:
+        columns = 5
+    try:
+        rows_input = input().strip()
+        rows = float(rows_input) if rows_input else 5
+    except EOFError:
+        rows = 5
+    try:
+        entry_col_input = input().strip()
+        if entry_col_input:
+            entry_col = int(entry_col_input)
+    except EOFError:
+        pass
+    try:
+        magic_number_input = input().strip()
+        if magic_number_input:
+            magic_number = float(magic_number_input)
+    except EOFError:
+        pass
+    try:
+        treasure_flag_input = input().strip()
+        if treasure_flag_input:
+            treasure_flag = int(treasure_flag_input)
+    except EOFError:
+        pass
+
+    m = Main(entry_column=entry_col, magic_number=magic_number, treasure_flag=treasure_flag)
+    m.run()
+
 
