@@ -980,34 +980,7 @@ class Main:
                 #1071PRINT"."
                 case 1071:
                     label = 1072
-                    # Check if this is the exit cell
-                    is_exit = (scalarI == self.as_int(scalarX)) and (scalarJ == self.as_int(scalarV))
-                    print_treasure = False
-                    if is_exit:
-                        # Check if exit is a dead end
-                        exit_col = self.as_int(scalarX)
-                        exit_row = self.as_int(scalarV)
-                        open_paths = 0
-                        max_col = len(matrixV) - 1
-                        max_row = len(matrixV[0]) - 1
-                        # Up
-                        if exit_row - 1 >= 1:
-                            if matrixV[exit_col][exit_row-1] in (1,2,3):
-                                open_paths += 1
-                        # Left
-                        if exit_col - 1 >= 1:
-                            if matrixV[exit_col-1][exit_row] in (1,2,3):
-                                open_paths += 1
-                        # Right
-                        if exit_col + 1 <= max_col:
-                            if matrixV[exit_col+1][exit_row] in (1,2,3):
-                                open_paths += 1
-                        if open_paths == 1:
-                            print_treasure = True
-                    if print_treasure:
-                        self.print_expr("<>")
-                    else:
-                        self.print_expr(".")
+                    self.print_expr(".")
                     self.println()
                 
                 #1072NEXTJ
@@ -1034,6 +1007,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
