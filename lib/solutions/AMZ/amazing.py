@@ -906,8 +906,13 @@ class Main:
                 #1018IFV(I,J)<2THEN1030
                 case 1018:
                     label = 1020
-                    if (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] < 2):
-                        label = 1030
+                    # If the cell is a passage (not a wall), or a treasure/exit
+                    if (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] == 3):
+                        # Print treasure chest at the exit
+                        self.print_expr("<>")
+                        label = 1040  # Skip to next cell
+                    elif (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] < 2):
+                        label = 1030  # Print passage
                 
                 #1020PRINT"";
                 case 1020:
@@ -1036,3 +1041,4 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
