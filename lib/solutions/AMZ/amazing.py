@@ -759,7 +759,7 @@ class Main:
                 case 875:
                     label = 880
                     # If dead end is in the last row, mark as treasure (4) instead of exit (3)
-                    if scalarS == scalarV:
+                    if scalarS == scalarV and self.treasure == 1:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarV)] = 4
                         print("Treasure Found!")
                         # Do NOT place exit here; random exit will be picked later
@@ -805,7 +805,7 @@ class Main:
                 #930V(R,S)=3:GOTO950
                 case 930:
                     label = 940
-                    if scalarS == scalarV:
+                    if scalarS == scalarV and self.treasure == 1:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
                     else:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
@@ -814,7 +814,7 @@ class Main:
                 #940V(R,S)=1
                 case 940:
                     label = 950
-                    if scalarS == scalarV:
+                    if scalarS == scalarV and self.treasure == 1:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
                     else:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 1
@@ -845,7 +845,7 @@ class Main:
                 #975V(R,S)=3:Q=0:GOTO1000
                 case 975:
                     label = 980
-                    if scalarS == scalarV:
+                    if scalarS == scalarV and self.treasure == 1:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
                     else:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
@@ -855,7 +855,7 @@ class Main:
                 #980V(R,S)=1:Q=0:R=1:S=1:GOTO250
                 case 980:
                     label = 1000
-                    if scalarS == scalarV:
+                    if scalarS == scalarV and self.treasure == 1:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
                     else:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 1
@@ -899,7 +899,7 @@ class Main:
                 #1013V(X,V)=3:GOTO1015
                 case 1013:
                     label = 1014
-                    if scalarS == scalarV:
+                    if scalarS == scalarV and self.treasure == 1:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
                     else: 
                         matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 3
@@ -908,7 +908,7 @@ class Main:
                 #1014V(X,V)=1
                 case 1014:
                     label = 1015
-                    if scalarS == scalarV:
+                    if scalarS == scalarV and self.treasure == 1:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
                     else:
                         matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 1
@@ -949,8 +949,9 @@ class Main:
                     #if (scalarJ==scalarV-1) and (matrixV[self.as_int(scalarI)][self.as_int(scalarV)] == 4):
                     #    self.print_expr("<>")
                     if (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] == 4):
-                        self.print_expr("<>")
-                    self.print_expr("   ")
+                        self.print_expr("<>I")
+                    else:
+                        self.print_expr("   ")
                 
                 #1021GOTO1040
                 case 1021:
@@ -1049,6 +1050,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
