@@ -124,8 +124,8 @@ class Main:
                     label = 102
                     self.print_expr("WHAT ARE YOUR WIDTH AND LENGTH")
                     self.println()
-                    scalarH = float(input())
-                    scalarV = float(input())
+                    scalarH = float(input()) #clomuns
+                    scalarV = float(input()) # rows
                     # Read entry column if provided (optional third input)
                     try:
                         entry_col = input()
@@ -190,7 +190,7 @@ class Main:
                     if self.entry_column is not None:
                         scalarX = int(self.entry_column)
                     else:
-                        scalarX = self.round_down_to_int(self.random(1)*scalarH+1) #Exit location.
+                        scalarX = self.round_down_to_int(self.random(1)*scalarH+1) #entrance location.
                 
                 #165FORI=1TOH
                 case 165:
@@ -204,11 +204,11 @@ class Main:
                 #170IFI=XTHEN173
                 case 170:
                     label = 171
-                    if (scalarI == scalarX): # if I=X draw the exit
+                    if (scalarI == scalarX): # if I=X draw the entrance
                         label = 173
                 
                 #171PRINT".--";:GOTO180
-                case 171:
+                case 171: # Upper wall
                     label = 173
                     self.print_expr(".--")
                     label = 180
@@ -216,7 +216,7 @@ class Main:
                 #173PRINT".";
                 case 173:
                     label = 180
-                    self.print_expr(".  ") # draw the exit
+                    self.print_expr(".  ") # draw the entrance
                 
                 #180NEXTI
                 case 180:
@@ -1007,5 +1007,6 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
