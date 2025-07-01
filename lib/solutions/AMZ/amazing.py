@@ -882,14 +882,29 @@ class Main:
                 case 1012:
                     label = 1013
                     if (matrixV[self.as_int(scalarX)][self.as_int(scalarV)] == 0):
-                        label = 1014
-                
+                        # --- R5: Place treasure instead of exit if required ---
+                        if (
+                            self.dead_end_behaviour == "CREATE_TREASURE"
+                            and treasure_col is None
+                        ):
+                            treasure_col = self.as_int(scalarX)
+                            # Do NOT place exit (skip label = 1014)
+                            label = 1015
+                        else:
+                            label = 1014
+
                 #1013V(X,V)=3:GOTO1015
                 case 1013:
                     label = 1014
                     matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 3
+                    # --- R5: Remove treasure if exit is created in same column ---
+                    if (
+                        self.dead_end_behaviour == "CREATE_TREASURE"
+                        and treasure_col == self.as_int(scalarX)
+                    ):
+                        treasure_col = None
                     label = 1015
-                
+
                 #1014V(X,V)=1
                 case 1014:
                     label = 1015
@@ -1022,9 +1037,3 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
-
-
-
-
-
-
