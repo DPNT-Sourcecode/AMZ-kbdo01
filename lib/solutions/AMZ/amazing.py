@@ -240,7 +240,7 @@ class Main:
                 #200R=X:S=1:GOTO260
                 case 200:
                     label = 210
-                    scalarR = scalarX
+                    scalarR = scalarX # starting row is the entrance column
                     scalarS = 1
                     label = 260
                 
@@ -284,7 +284,7 @@ class Main:
                 #260IFR-1=0THEN530
                 case 260:
                     label = 265
-                    if (scalarR-1 == 0):
+                    if (scalarR-1 == 0): # if we are at the first row
                         label = 530
                 
                 #265IFW(R-1,S)<>0THEN530
@@ -493,7 +493,7 @@ class Main:
                 #530IFS-1=0THEN670
                 case 530:
                     label = 540
-                    if (scalarS-1 == 0):
+                    if (scalarS-1 == 0): # if we are at the first column
                         label = 670
                 
                 #540IFW(R,S-1)<>0THEN670
@@ -1007,3 +1007,4 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
