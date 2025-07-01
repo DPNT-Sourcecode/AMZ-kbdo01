@@ -802,6 +802,8 @@ class Main:
                 #930V(R,S)=3:GOTO950
                 case 930:
                     label = 940
+                    if scalarS == scalarV:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
                     matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
                     label = 950
                 
@@ -836,6 +838,8 @@ class Main:
                 #975V(R,S)=3:Q=0:GOTO1000
                 case 975:
                     label = 980
+                    if scalarS == scalarV:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
                     matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
                     scalarQ = 0
                     label = 1000
@@ -884,6 +888,8 @@ class Main:
                 #1013V(X,V)=3:GOTO1015
                 case 1013:
                     label = 1014
+                    if scalarS == scalarV:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
                     matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 3
                     label = 1015
                 
@@ -1028,3 +1034,4 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
