@@ -1,10 +1,11 @@
 import math
 
 class Main:
-    def __init__(self, entry_column=None, magic_number=0.5):
+    def __init__(self, entry_column=None, magic_number=0.5, treasure=0):
         self.current_line_char_count = 0
         self.entry_column = entry_column  # 1-indexed, or None
         self.magic_number = magic_number  # Used for deterministic "random"
+        self.treasure = treasure  # Used for deterministic "random"
         self._maze_lines = []  # Buffer for maze output
 
     def print_expr(self, expression):
@@ -755,7 +756,7 @@ class Main:
                 case 875:
                     label = 880
                     # If dead end is in the last row, mark as treasure (4) instead of exit (3)
-                    if scalarS == scalarV:
+                    if (scalarS == scalarV) and (self.treasure == 1):
                         matrixV[self.as_int(scalarR)][self.as_int(scalarV)] = 4
                     else:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
@@ -854,8 +855,8 @@ class Main:
                 #1010IFZ=1THEN1015
                 case 1010:
                     label = 1011
-                    #if (scalarZ == 1):   # FIX                     
-                    #    label = 1015     # FIX
+                    if (scalarZ == 1):   # FIX                     
+                        label = 1015     # FIX
                 
                 #1011X=INT(RND(1)*H+1)
                 case 1011:
@@ -1009,4 +1010,5 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
