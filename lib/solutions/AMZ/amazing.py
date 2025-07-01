@@ -804,13 +804,17 @@ class Main:
                     label = 940
                     if scalarS == scalarV:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
-                    matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
+                    else:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
                     label = 950
                 
                 #940V(R,S)=1
                 case 940:
                     label = 950
-                    matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 1
+                    if scalarS == scalarV:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
+                    else:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 1
                 
                 #950S=S+1:IFC=H*V+1THEN1010
                 case 950:
@@ -840,14 +844,18 @@ class Main:
                     label = 980
                     if scalarS == scalarV:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
-                    matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
+                    else:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
                     scalarQ = 0
                     label = 1000
                 
                 #980V(R,S)=1:Q=0:R=1:S=1:GOTO250
                 case 980:
                     label = 1000
-                    matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 1
+                    if scalarS == scalarV:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
+                    else:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 1
                     scalarQ = 0
                     scalarR = 1
                     scalarS = 1
@@ -890,13 +898,17 @@ class Main:
                     label = 1014
                     if scalarS == scalarV:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
-                    matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 3
+                    else: 
+                        matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 3
                     label = 1015
                 
                 #1014V(X,V)=1
                 case 1014:
                     label = 1015
-                    matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 1
+                    if scalarS == scalarV:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
+                    else:
+                        matrixV[self.as_int(scalarX)][self.as_int(scalarV)] = 1
                 
                 #1015FORJ=1TOV
                 case 1015:
@@ -1034,4 +1046,5 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
