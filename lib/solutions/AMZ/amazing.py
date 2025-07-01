@@ -913,7 +913,11 @@ class Main:
                 #1020PRINT"";
                 case 1020:
                     label = 1021
-                    self.print_expr("   ")
+                    #self.print_expr("   ")
+                    if matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] == 4:
+                        self.print_expr("<>")
+                    else:
+                        self.print_expr("   ")
                 
                 #1021GOTO1040
                 case 1021:
@@ -1008,8 +1012,3 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
-
-
-
-
-
