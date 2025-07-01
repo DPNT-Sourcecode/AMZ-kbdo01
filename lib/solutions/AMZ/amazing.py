@@ -185,7 +185,7 @@ class Main:
                     if self.entry_column is not None:
                         scalarX = int(self.entry_column)
                     else:
-                        scalarX = self.round_down_to_int(self.random(1)*scalarH+1) #Exit location.
+                        scalarX = self.round_down_to_int(self.random(1)*scalarH+1) #Entry location.
                 
                 #165FORI=1TOH
                 case 165:
@@ -199,7 +199,7 @@ class Main:
                 #170IFI=XTHEN173
                 case 170:
                     label = 171
-                    if (scalarI == scalarX): # if I=X draw the exit
+                    if (scalarI == scalarX): # if I=X draw the entry
                         label = 173
                 
                 #171PRINT".--";:GOTO180
@@ -211,7 +211,7 @@ class Main:
                 #173PRINT".";
                 case 173:
                     label = 180
-                    self.print_expr(".  ") # draw the exit
+                    self.print_expr(".  ") # draw the entry
                 
                 #180NEXTI
                 case 180:
@@ -1005,6 +1005,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
