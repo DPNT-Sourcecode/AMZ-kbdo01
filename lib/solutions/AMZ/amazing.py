@@ -1,7 +1,7 @@
 import math
 
 class Main:
-    def __init__(self, entry_column=None, magic_number=0.5, treasure=0):
+    def __init__(self, entry_column=None, magic_number=0.5, treasure=1):
         self.current_line_char_count = 0
         self.entry_column = entry_column  # 1-indexed, or None
         self.magic_number = magic_number  # Used for deterministic "random"
@@ -756,9 +756,10 @@ class Main:
                 case 875:
                     label = 880
                     # If dead end is in the last row, mark as treasure (4) instead of exit (3)
-                    if (scalarS == scalarV) and (self.treasure == 1):
-                        matrixV[self.as_int(scalarR)][self.as_int(scalarV)] = 4
-                    else:
+                    #if (scalarS != scalarV) and (self.treasure == 1):
+                    if (scalarS != scalarV):
+                        #matrixV[self.as_int(scalarR)][self.as_int(scalarV)] = 4
+                    #else:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
                     label = 890
                 
@@ -1010,5 +1011,6 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
