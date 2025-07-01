@@ -862,8 +862,10 @@ class Main:
                 #1012IFV(X,V)=0THEN1014
                 case 1012:
                     label = 1013
+                    print("...")
                     if (matrixV[self.as_int(scalarX)][self.as_int(scalarV)] == 0):
                         label = 1014
+                        
                 
                 #1013V(X,V)=3:GOTO1015
                 case 1013:
@@ -1003,6 +1005,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
