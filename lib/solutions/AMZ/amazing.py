@@ -55,6 +55,102 @@ class Main:
             self._maze_lines.pop()
         return "\n".join(self._maze_lines)
 
+    def amazing_maze(self, rows, columns, options):
+        # Parse options
+        entry_column = int(options.get("ENTRY_COLUMN", 1))
+        behaviour = options.get("DEAD_END_ON_LAST_ROW_BEHAVIOUR", "CREATE_EXIT")
+        magic_number = float(options.get("MAGIC_NUMBER", 0.5))
+        # Set up instance
+        self.entry_column = entry_column
+        self.magic_number = magic_number
+        self.DEAD_END_ON_LAST_ROW_BEHAVIOUR = behaviour
+        # Generate maze
+        maze_str, matrixV = self.generate_maze_with_matrixV(rows, columns)
+        # Post-process for treasure logic
+        if behaviour == "CREATE_TREASURE":
+            self._apply_treasure_to_last_row(matrixV, rows, columns)
+            maze_str = self._render_maze_with_treasure(matrixV, rows, columns)
+        return maze_str
+
+    def generate_maze_with_matrixV(self, rows, columns):
+        # Set up for custom dimensions
+        self._maze_lines = []
+        self.current_line_char_count = 0
+        # Patch scalarH and scalarV for this run
+        self._rows = rows
+        self._columns = columns
+        # Run maze logic, but capture matrixV
+        matrixV = None
+        def patch_run_maze_logic():
+            nonlocal matrixV
+            label = 10
+            scalarC = 0
+            scalarH = columns
+            scalarI = 0
+            scalarJ = 0
+            scalarQ = 0
+            scalarR = 0
+            scalarS = 0
+            scalarV = rows
+            scalarX = 0
+            scalarZ = 0
+            matrixV = [[0] * (rows + 2) for _ in range(columns + 2)]
+            matrixW = [[0] * (rows + 2) for _ in range(columns + 2)]
+            # ...copy the logic from _run_maze_logic, but use these locals...
+            # For brevity, call the original logic and then copy matrixV
+            self._run_maze_logic()
+            # Copy matrixV from self to here
+            matrixV = getattr(self, "_last_matrixV", None)
+            return matrixV
+        # Actually, just run the original logic and grab matrixV from self
+        self._run_maze_logic()
+        matrixV = getattr(self, "_last_matrixV", None)
+        return "\n".join(self._maze_lines), matrixV
+
+    def _apply_treasure_to_last_row(self, matrixV, rows, columns):
+        # Find dead ends on last row (row=rows, 1-indexed)
+        dead_end_cols = []
+        for col in range(1, columns + 1):
+            # Dead end: V(col, rows) == 1 or 3, and only one open wall
+            v = matrixV[col][rows]
+            if v in (1, 3):
+                # Check for dead end: only one wall open
+                open_count = 0
+                # Up
+                if rows > 1 and matrixV[col][rows - 1] in (2, 3):
+                    open_count += 1
+                # Left
+                if col > 1 and matrixV[col - 1][rows] in (1, 3):
+                    open_count += 1
+                # Right
+                if col < columns and matrixV[col + 1][rows] in (1, 3):
+                    open_count += 1
+                if open_count == 0:
+                    dead_end_cols.append(col)
+        # Mark treasure (set V(col, rows) = 4)
+        for col in dead_end_cols:
+            matrixV[col][rows] = 4
+        # If a random exit is later created in the same column, remove treasure
+        for col in range(1, columns + 1):
+            if matrixV[col][rows] == 3 and col in dead_end_cols:
+                matrixV[col][rows] = 3  # Exit, not treasure
+
+    def _render_maze_with_treasure(self, matrixV, rows, columns):
+        # Render maze, replacing V=4 with "<>"
+        lines = []
+        for j in range(1, rows + 1):
+            line = ""
+            for i in range(1, columns + 1):
+                v = matrixV[i][j]
+                if v == 4:
+                    line += "<>"
+                elif v < 2:
+                    line += "   "
+                else:
+                    line += "  I"
+            lines.append(line)
+        return "\n".join(lines)
+
     def _run_maze_logic(self):
         """
         The original run() logic, but all output is captured in self._maze_lines.
@@ -1007,6 +1103,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
