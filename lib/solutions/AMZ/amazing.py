@@ -906,13 +906,8 @@ class Main:
                 #1018IFV(I,J)<2THEN1030
                 case 1018:
                     label = 1020
-                    # If the cell is a passage (not a wall), or a treasure/exit
-                    if (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] == 3):
-                        # Print treasure chest at the exit
-                        self.print_expr("<>")
-                        label = 1040  # Skip to next cell
-                    elif (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] < 2):
-                        label = 1030  # Print passage
+                    if (matrixV[self.as_int(scalarI)][self.as_int(scalarJ)] < 2):
+                        label = 1030
                 
                 #1020PRINT"";
                 case 1020:
@@ -996,36 +991,7 @@ class Main:
                 
                 #1073END
                 case 1073:
-                    # Check if the exit is a dead end and draw a treasure chest if so
-                    # Find the exit position (bottom row, where matrixV[x][scalarV] == 3)
-                    exit_col = None
-                    for x in range(1, self.as_int(scalarH) + 1):
-                        if matrixV[x][self.as_int(scalarV)] == 3:
-                            exit_col = x
-                            break
-                    # Check if the exit is a dead end (no open neighbor above or to the sides)
-                    is_dead_end = False
-                    if exit_col is not None:
-                        above = matrixV[exit_col][self.as_int(scalarV) - 1] if self.as_int(scalarV) > 1 else 2
-                        left = matrixV[exit_col - 1][self.as_int(scalarV)] if exit_col > 1 else 2
-                        right = matrixV[exit_col + 1][self.as_int(scalarV)] if exit_col < self.as_int(scalarH) else 2
-                        # Dead end if all neighbors are walls (2) or out of bounds
-                        if (above >= 2) and (left >= 2) and (right >= 2):
-                            is_dead_end = True
-
-                    # If dead end, replace the exit symbol in the output buffer with "<>"
-                    if is_dead_end:
-                        # Find the last line of the maze (should be the bottom row)
-                        for idx in range(len(self._maze_lines) - 1, -1, -1):
-                            line = self._maze_lines[idx]
-                            # Try to locate the exit column in the printed line
-                            # Each cell is 3 chars wide, plus 1 for the left wall, so offset = 1 + (exit_col-1)*3
-                            offset = 1 + (exit_col - 1) * 3
-                            if len(line) >= offset + 2:
-                                # Replace the two characters at the exit with "<>"
-                                self._maze_lines[idx] = line[:offset] + "<>" + line[offset+2:]
-                                break
-
+                    label = 9999
                     label = 9999
 
                 case 9999:
@@ -1041,4 +1007,5 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
