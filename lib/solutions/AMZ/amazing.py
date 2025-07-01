@@ -1,12 +1,13 @@
 import math
 
 class Main:
-    def __init__(self, entry_column=None, magic_number=0.5,treasure=0):
+    def __init__(self, entry_column=None, magic_number=0.5, treasure=0, dead_end_behaviour="DEAD_END_ON_LAST_ROW_BEHAVIOUR"):
         self.current_line_char_count = 0
         self.entry_column = entry_column  # 1-indexed, or None
         self.magic_number = magic_number  # Used for deterministic "random"
         self._maze_lines = []  # Buffer for maze output
         self.treasure = treasure  # Treasure chest within the maze?
+        self.dead_end_behaviour = dead_end_behaviour  # New behaviour parameter
 
     def print_expr(self, expression):
         if isinstance(expression, (int, float)):
@@ -40,24 +41,35 @@ class Main:
     def mid(self, text, starting_index, num_chars):
         return text[self.as_int(starting_index - 1):self.as_int(starting_index + num_chars - 1)]
 
-    def generate_maze(self):
+    def generate_maze(self, rows=None, cols=None, options=None):
         """
         Runs the maze generation logic and returns the maze as a string.
+        Accepts optional rows, cols, and options for easier integration.
         """
-        self._maze_lines = []
-        self.current_line_char_count = 0
-        self._run_maze_logic()
-        # Remove any leading empty lines
-        while self._maze_lines and self._maze_lines[0] == "":
-            self._maze_lines.pop(0)
-        # Remove any trailing empty lines
-        while self._maze_lines and self._maze_lines[-1] == "":
-            self._maze_lines.pop()
-        return "\n".join(self._maze_lines)
+        if rows is not None and cols is not None:
+            self.entry_column = int(options.get("ENTRY_COLUMN", 1)) if options and "ENTRY_COLUMN" in options else None
+            self.magic_number = float(options.get("MAGIC_NUMBER", 0.5)) if options and "MAGIC_NUMBER" in options else 0.5
+            self.treasure = int(options.get("TREASURE", 0)) if options and "TREASURE" in options else 0
+            self.dead_end_behaviour = options.get("DEAD_END_ON_LAST_ROW_BEHAVIOUR", "CREATE_EXIT") if options else "CREATE_EXIT"
+            self._maze_lines = []
+            self.current_line_char_count = 0
+            return self._run_maze_logic(rows, cols)
+        else:
+            self._maze_lines = []
+            self.current_line_char_count = 0
+            self._run_maze_logic()
+            # Remove any leading empty lines
+            while self._maze_lines and self._maze_lines[0] == "":
+                self._maze_lines.pop(0)
+            # Remove any trailing empty lines
+            while self._maze_lines and self._maze_lines[-1] == "":
+                self._maze_lines.pop()
+            return "\n".join(self._maze_lines)
 
-    def _run_maze_logic(self):
+    def _run_maze_logic(self, forced_rows=None, forced_cols=None):
         """
         The original run() logic, but all output is captured in self._maze_lines.
+        Accepts forced_rows and forced_cols for integration with amazing_maze.
         """
         label = 10
 
@@ -77,6 +89,9 @@ class Main:
         loopActive1017 = False
         loopActive1043 = False
         loopActive1015 = False
+
+        # --- R5: Track treasure on last row ---
+        treasure_col = None  # 1-indexed column for treasure, if any
 
         iterations = 0
 
@@ -1007,6 +1022,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
