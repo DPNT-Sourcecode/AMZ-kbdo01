@@ -145,7 +145,7 @@ class Main:
                 #102IFH<>1ANDV<>1THEN110
                 case 102:
                     label = 104
-                    if (scalarH != 1) and (scalarV != 1):
+                    if (scalarH != 1) and (scalarV != 1): 
                         label = 110
                 
                 #104PRINT"MEANINGLESSDIMENSIONS.TRYAGAIN.":GOTO100
@@ -1007,6 +1007,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
