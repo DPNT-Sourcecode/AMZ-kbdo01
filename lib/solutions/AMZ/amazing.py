@@ -834,7 +834,8 @@ class Main:
                 #975V(R,S)=3:Q=0:GOTO1000
                 case 975:
                     label = 980
-                    matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
+                    #matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
+                    matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
                     scalarQ = 0
                     label = 1000
                 
@@ -1007,6 +1008,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
