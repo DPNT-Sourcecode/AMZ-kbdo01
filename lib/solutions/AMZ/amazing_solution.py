@@ -13,20 +13,25 @@ class AmazingSolution:
         script_path = os.path.join(os.path.dirname(__file__), "amazing.py")
         input_data = f"{columns}\n{rows}\n"
 
-        # Always check for ENTRY_COLUMN first, then LEGACY_RANDOM_MAGIC_NUMBER
+        # Always check for ENTRY_COLUMN first, then LEGACY_RANDOM_MAGIC_NUMBER, then DEAD_END_ON_LAST_ROW_BEHAVIOUR
         entry_column = ""
         magic_number = ""
+        dead_end_behaviour = ""
 
         if isinstance(maze_generation_options, dict):
             if "ENTRY_COLUMN" in maze_generation_options and maze_generation_options["ENTRY_COLUMN"] is not None:
                 entry_column = str(maze_generation_options["ENTRY_COLUMN"])
             if "LEGACY_RANDOM_MAGIC_NUMBER" in maze_generation_options and maze_generation_options["LEGACY_RANDOM_MAGIC_NUMBER"] is not None:
                 magic_number = str(maze_generation_options["LEGACY_RANDOM_MAGIC_NUMBER"])
+            if "DEAD_END_ON_LAST_ROW_BEHAVIOUR" in maze_generation_options and maze_generation_options["DEAD_END_ON_LAST_ROW_BEHAVIOUR"] is not None:
+                dead_end_behaviour = str(maze_generation_options["DEAD_END_ON_LAST_ROW_BEHAVIOUR"])
 
         # Add ENTRY_COLUMN (or blank line)
         input_data += f"{entry_column}\n"
         # Add LEGACY_RANDOM_MAGIC_NUMBER (or blank line)
         input_data += f"{magic_number}\n"
+        # Add DEAD_END_ON_LAST_ROW_BEHAVIOUR (or blank line)
+        input_data += f"{dead_end_behaviour}\n"
 
         result = subprocess.run(
             [sys.executable, script_path],
@@ -50,7 +55,6 @@ class AmazingSolution:
         return maze
 
 if __name__ == "__main__":
-    # Example usage with ENTRY_COLUMN as a map key
-    #result = AmazingSolution().amazing_maze(5, 5, { "ENTRY_COLUMN": "3" })  # Example usage
-    result = AmazingSolution().amazing_maze(2, 2, { "LEGACY_RANDOM_MAGIC_NUMBER": "0.5" })  # Example usage
+    # Example usage with DEAD_END_ON_LAST_ROW_BEHAVIOUR as a map key
+    result = AmazingSolution().amazing_maze(2, 2, { "LEGACY_RANDOM_MAGIC_NUMBER": "0.5", "DEAD_END_ON_LAST_ROW_BEHAVIOUR": "CREATE_TREASURE" })  # Example
     print(result)
