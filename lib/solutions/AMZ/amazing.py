@@ -850,14 +850,14 @@ class Main:
                 #1010IFZ=1THEN1015
                 case 1010:
                     label = 1011
-                    if (scalarZ == 1):
+                    if (scalarZ == 1):                        
                         label = 1015
                 
                 #1011X=INT(RND(1)*H+1)
                 case 1011:
                     label = 1012
                     scalarX = self.round_down_to_int(self.random(1)*scalarH+1)
-                    print(scalarX)
+                    #print(scalarX)
                 
                 #1012IFV(X,V)=0THEN1014
                 case 1012:
@@ -1003,5 +1003,6 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
