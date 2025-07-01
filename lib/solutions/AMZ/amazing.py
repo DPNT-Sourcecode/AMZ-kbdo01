@@ -729,7 +729,10 @@ class Main:
                 #840V(R,S-1)=1:S=S-1:IFC=H*V+1THEN1010
                 case 840:
                     label = 850
-                    matrixV[self.as_int(scalarR)][self.as_int(scalarS-1)] = 1
+                    if scalarS == scalarV:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 4
+                    else:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarS-1)] = 1
                     scalarS = scalarS-1
                     if (scalarC == scalarH*scalarV+1):
                         label = 1010
@@ -1046,5 +1049,6 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
