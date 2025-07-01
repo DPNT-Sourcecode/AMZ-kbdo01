@@ -991,7 +991,36 @@ class Main:
                 
                 #1073END
                 case 1073:
-                    label = 9999
+                    # Check if the exit is a dead end and draw a treasure chest if so
+                    # Find the exit position (bottom row, where matrixV[x][scalarV] == 3)
+                    exit_col = None
+                    for x in range(1, self.as_int(scalarH) + 1):
+                        if matrixV[x][self.as_int(scalarV)] == 3:
+                            exit_col = x
+                            break
+                    # Check if the exit is a dead end (no open neighbor above or to the sides)
+                    is_dead_end = False
+                    if exit_col is not None:
+                        above = matrixV[exit_col][self.as_int(scalarV) - 1] if self.as_int(scalarV) > 1 else 2
+                        left = matrixV[exit_col - 1][self.as_int(scalarV)] if exit_col > 1 else 2
+                        right = matrixV[exit_col + 1][self.as_int(scalarV)] if exit_col < self.as_int(scalarH) else 2
+                        # Dead end if all neighbors are walls (2) or out of bounds
+                        if (above >= 2) and (left >= 2) and (right >= 2):
+                            is_dead_end = True
+
+                    # If dead end, replace the exit symbol in the output buffer with "<>"
+                    if is_dead_end:
+                        # Find the last line of the maze (should be the bottom row)
+                        for idx in range(len(self._maze_lines) - 1, -1, -1):
+                            line = self._maze_lines[idx]
+                            # Try to locate the exit column in the printed line
+                            # Each cell is 3 chars wide, plus 1 for the left wall, so offset = 1 + (exit_col-1)*3
+                            offset = 1 + (exit_col - 1) * 3
+                            if len(line) >= offset + 2:
+                                # Replace the two characters at the exit with "<>"
+                                self._maze_lines[idx] = line[:offset] + "<>" + line[offset+2:]
+                                break
+
                     label = 9999
 
                 case 9999:
@@ -1007,4 +1036,5 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
