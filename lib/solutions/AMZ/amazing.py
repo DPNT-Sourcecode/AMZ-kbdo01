@@ -1,7 +1,7 @@
 import math
 
 class Main:
-    def __init__(self, entry_column=None, magic_number=0.5, treasure=1):
+    def __init__(self, entry_column=None, magic_number=0.5, treasure=0):
         self.current_line_char_count = 0
         self.entry_column = entry_column  # 1-indexed, or None
         self.magic_number = magic_number  # Used for deterministic "random"
@@ -1050,6 +1050,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
