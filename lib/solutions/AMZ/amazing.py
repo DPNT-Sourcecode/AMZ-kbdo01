@@ -756,10 +756,10 @@ class Main:
                 case 875:
                     label = 880
                     # If dead end is in the last row, mark as treasure (4) instead of exit (3)
-                    #if (scalarS != scalarV) and (self.treasure == 1):
-                    if (scalarS != scalarV):
-                        #matrixV[self.as_int(scalarR)][self.as_int(scalarV)] = 4
-                    #else:
+                    if scalarS == scalarV:
+                        matrixV[self.as_int(scalarR)][self.as_int(scalarV)] = 4
+                        # Do NOT place exit here; random exit will be picked later
+                    else:
                         matrixV[self.as_int(scalarR)][self.as_int(scalarS)] = 3
                     label = 890
                 
@@ -1012,6 +1012,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
