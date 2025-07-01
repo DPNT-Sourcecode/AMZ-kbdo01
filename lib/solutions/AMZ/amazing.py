@@ -863,6 +863,7 @@ class Main:
                 case 1011:
                     label = 1012
                     scalarX = self.round_down_to_int(self.random(1)*scalarH+1)
+                    print("Here")
                     print(scalarX)
                 
                 #1012IFV(X,V)=0THEN1014
@@ -1011,6 +1012,7 @@ class Main:
 
 if __name__ == "__main__":
     Main().run()
+
 
 
 
